@@ -1,23 +1,30 @@
 #pragma once
 
-#include <iostream>
-#include <SFML/Graphics.hpp>
-#include <vector>
-#include <algorithm>
+#include "TDS.h"
+#include "Player.h"
+#include "GameObject.h"
 
-class App
-{
+class App {
 public:
-	void init_app();
-	void main_loop();
+	void initApp();
+
+	// \brief Launches game's main loop
+	void mainLoop();
+
+	// \brief Returns seconds passed between previous and current main loop cycles
+	static float deltaTime;
 
 private:
 	sf::RenderWindow* window;
-	std::vector<sf::Drawable *> *objects;
-	sf::CircleShape* player;
+
+	std::vector<GameObject*> gameObjects;
+
+	Player* player;
+
 	bool lmbPressed;
 
-	void poll_events();
-	void draw_objects();
+	void callTicks();
+	void pollEvents();
+	void drawObjects();
 };
 

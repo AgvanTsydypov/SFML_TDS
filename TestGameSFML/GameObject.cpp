@@ -1,0 +1,64 @@
+#include "GameObject.h"
+
+GameObject::GameObject() {
+	sprite = nullptr;
+	shape = nullptr;
+
+	position = sf::Vector2f(0, 0);
+}
+
+GameObject::~GameObject() {
+	if (sprite)
+		delete sprite;
+	if (shape)
+		delete shape;
+}
+
+void GameObject::draw(sf::RenderWindow& window) {
+	if (sprite)
+		window.draw(*sprite);
+	if (shape)
+		window.draw(*shape);
+}
+
+void GameObject::tick() {
+
+}
+
+void GameObject::setPosition(sf::Vector2f new_position) {
+	position = new_position;
+
+	if (sprite)
+		sprite->setPosition(position);
+	if (shape)
+		shape->setPosition(position);
+}
+
+void GameObject::setPosition(float x, float y) {
+	setPosition(sf::Vector2f(x, y));
+}
+
+void GameObject::move(sf::Vector2f speed) {
+	setPosition(position + speed);
+}
+
+void GameObject::setShape(sf::Shape* new_shape) {
+	shape = new_shape;
+}
+
+sf::Vector2f GameObject::getPosition() {
+	return position;
+}
+
+sf::Vector2f GameObject::getDimensions() {
+	sf::FloatRect boundaries;
+	if (sprite)
+		boundaries = sprite->getGlobalBounds();
+	else if (shape)
+		boundaries = shape->getGlobalBounds();
+	else
+		return sf::Vector2f(0, 0);
+
+	sf::Vector2f dimensions(boundaries.width, boundaries.height);
+	return dimensions;
+}

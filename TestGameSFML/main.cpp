@@ -4,9 +4,9 @@ int main()
 {
     App app;
 
-    app.init_app();
+    app.initApp();
 
-    app.main_loop();
+    app.mainLoop();
 
     return 0;
 }

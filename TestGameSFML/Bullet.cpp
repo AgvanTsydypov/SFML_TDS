@@ -1,28 +1,23 @@
 #include "Bullet.h"
 
-Bullet::Bullet(float time, sf::Vector2f bullet_speed, sf::Vector2f pos) {
-	shape.setPosition(pos);
-	shape.setRadius(7.f);
-	shape.setPointCount(4);
-	shape.setFillColor(sf::Color::Magenta);
+Bullet::Bullet() {
+	position = sf::Vector2f(0, 0);
 
-	timer = time;
-
-	speed = bullet_speed;
-
-	to_destroy = false;
-}
-
-void Bullet::bullet_new_pos(sf::Vector2f pos) {
-	shape.setPosition(pos);
-}
-
-void Bullet::tick(float dt) {
-	shape.move(speed * dt);
+	sprite = nullptr;
+	shape = new sf::CircleShape(7.f, 5);
+	shape->setFillColor(sf::Color::Magenta);
 	
-	timer -= dt;
+	timer = 2.f;
+
+	speed = sf::Vector2f(100.f, 0.f);
+}
+
+void Bullet::tick() {
+	move(speed * App::deltaTime);
+	
+	timer -= App::deltaTime;
 
 	if (timer <= 0) {
-		to_destroy = true;
+		toDestroy = true;
 	}
 }

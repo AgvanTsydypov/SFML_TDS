@@ -1,19 +1,17 @@
 #pragma once
 
+#include "TDS.h"
 #include "App.h"
+#include "GameObject.h"
 
-class Bullet
-{
+class Bullet : public GameObject {
 public:
-	sf::CircleShape shape;
-	bool to_destroy;
-	
-	Bullet(float time, sf::Vector2f bullet_speed, sf::Vector2f pos);
-	
-	void bullet_new_pos(sf::Vector2f pos);
-	void tick(float dt);
+	Bullet();
+
+	void tick();
 
 private:
+	// \brief Time before self-destruction
 	float timer;
 	sf::Vector2f speed;
 };
