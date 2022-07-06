@@ -3,7 +3,6 @@
 GameObject::GameObject() {
 	sprite = nullptr;
 	shape = nullptr;
-
 	position = sf::Vector2f(0, 0);
 }
 
@@ -44,6 +43,8 @@ void GameObject::move(sf::Vector2f speed) {
 
 void GameObject::setShape(sf::Shape* new_shape) {
 	shape = new_shape;
+	sf::FloatRect boundaries = shape->getGlobalBounds();
+	shape->setOrigin(boundaries.width / 2, boundaries.height / 2);
 }
 
 sf::Vector2f GameObject::getPosition() {

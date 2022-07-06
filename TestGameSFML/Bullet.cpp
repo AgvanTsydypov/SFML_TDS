@@ -4,12 +4,13 @@ Bullet::Bullet() {
 	position = sf::Vector2f(0, 0);
 
 	sprite = nullptr;
-	shape = new sf::CircleShape(7.f, 5);
-	shape->setFillColor(sf::Color::Magenta);
+	sf::CircleShape* newShape = new sf::CircleShape(10.f, 5);
+	newShape->setFillColor(sf::Color(120, 120, 120, 255));
+	setShape(newShape);
 	
 	timer = 2.f;
 
-	speed = sf::Vector2f(100.f, 0.f);
+	bulletSetSpeed();
 }
 
 void Bullet::tick() {
@@ -20,4 +21,12 @@ void Bullet::tick() {
 	if (timer <= 0) {
 		toDestroy = true;
 	}
+}
+
+void Bullet::bulletSetSpeed(sf::Vector2f bulletDirection) {
+	speed = bulletDirection * realSpeed;
+}
+
+void Bullet::bulletSetSpeed() {
+	speed = sf::Vector2f(realSpeed, 0.f);
 }

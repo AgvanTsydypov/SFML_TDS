@@ -10,7 +10,9 @@ void App::initApp() {
     lmbPressed = false;
 
     player = new Player();
+    std::cout << player->getDimensions().x << " " << player->getDimensions().y << std::endl;
     gameObjects.push_back(player);
+    player->setPosition(player->getDimensions() / 2.f);
 }
 
 void App::mainLoop() {
@@ -29,26 +31,32 @@ void App::mainLoop() {
         int hDir = rightPressed - leftPressed;
         int vDir = downPressed - upPressed;
 
+        sf::Vector2i mousePos = sf::Mouse::getPosition(*window);
+        sf::Vector2f directVector = sf::Vector2f(mousePos.x - player->getPosition().x, mousePos.y - player->getPosition().y);
+        sf::Vector2f mouseDirectionNormal = sf::Vector2f(directVector / (float)std::sqrt(std::pow(directVector.x, 2) + std::pow(directVector.y, 2)));
+
+        //std::cout << directVector.x << " - " << directVector.y << std::endl;
+
         if (hDir || vDir) {
             sf::Vector2f dir(static_cast<float>(hDir), static_cast<float>(vDir));
             sf::Vector2f speedVector = dir * App::deltaTime * playerSpeed;
 
-            if (player->getPosition().x + speedVector.x < 0) {
+            if (player->getPosition().x - player->getDimensions().x / 2.f + speedVector.x < 0) {
                 speedVector.x = 0;
-                player->setPosition(0, player->getPosition().y);
+                player->setPosition(player->getDimensions().x / 2.f, player->getPosition().y);
             }
-            if (player->getPosition().x + speedVector.x > window->getSize().x - player->getDimensions().x) {
+            if (player->getPosition().x + speedVector.x > window->getSize().x - player->getDimensions().x / 2.f) {
                 speedVector.x = 0;
-                player->setPosition(window->getSize().x - player->getDimensions().x, player->getPosition().y);
+                player->setPosition(window->getSize().x - player->getDimensions().x / 2.f, player->getPosition().y);
             }
 
-            if (player->getPosition().y + speedVector.y < 0) {
+            if (player->getPosition().y - player->getDimensions().y / 2.f + speedVector.y < 0) {
                 speedVector.y = 0;
-                player->setPosition(player->getPosition().x, 0);
+                player->setPosition(player->getPosition().x, player->getDimensions().y / 2.f);
             }
-            if (player->getPosition().y + speedVector.y > window->getSize().y - player->getDimensions().y) {
+            if (player->getPosition().y + speedVector.y > window->getSize().y - player->getDimensions().y / 2.f) {
                 speedVector.y = 0;
-                player->setPosition(player->getPosition().x, window->getSize().y - player->getDimensions().y);
+                player->setPosition(player->getPosition().x, window->getSize().y - player->getDimensions().y / 2.f);
             }
 
             player->move(speedVector);
@@ -56,10 +64,11 @@ void App::mainLoop() {
 
         bool shotDone = sf::Mouse::isButtonPressed(sf::Mouse::Left);
 
-        if (shotDone) {
+        if (shotDone && !lmbPressed) {
             lmbPressed = true;
             Bullet *bullet = new Bullet();
             bullet->setPosition(player->getPosition());
+            bullet->bulletSetSpeed(mouseDirectionNormal);
             gameObjects.push_back(bullet);
         }
 

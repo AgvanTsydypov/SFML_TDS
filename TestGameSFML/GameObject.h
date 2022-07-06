@@ -9,7 +9,7 @@ public:
 
 	GameObject();
 	~GameObject();
-
+	
 	// \brief This method is used to put sprite/shape to the window
 	virtual void draw(sf::RenderWindow & window);
 
