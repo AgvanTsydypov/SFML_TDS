@@ -8,15 +8,15 @@ Bullet::Bullet() {
 	newShape->setFillColor(sf::Color(120, 120, 120, 255));
 	setShape(newShape);
 	
-	timer = 2.f;
+	timer = 10.f;
 
 	bulletSetSpeed();
 }
 
-void Bullet::tick() {
-	move(speed * App::deltaTime);
+void Bullet::tick(TickData & tickData) {
+	move(speed * tickData.deltaTime);
 	
-	timer -= App::deltaTime;
+	timer -= tickData.deltaTime;
 
 	if (timer <= 0) {
 		toDestroy = true;

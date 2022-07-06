@@ -14,7 +14,7 @@ public:
 	virtual void draw(sf::RenderWindow & window);
 
 	// \brief This method is called every frame
-	virtual void tick();
+	virtual void tick(TickData & tickData);
 
 	virtual void setPosition(sf::Vector2f new_position);
 	virtual void setPosition(float x, float y);

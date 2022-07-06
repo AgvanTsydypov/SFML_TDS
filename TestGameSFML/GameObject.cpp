@@ -20,7 +20,7 @@ void GameObject::draw(sf::RenderWindow& window) {
 		window.draw(*shape);
 }
 
-void GameObject::tick() {
+void GameObject::tick(TickData & tickData) {
 
 }
 

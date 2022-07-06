@@ -11,9 +11,6 @@ public:
 	// \brief Launches game's main loop
 	void mainLoop();
 
-	// \brief Returns seconds passed between previous and current main loop cycles
-	static float deltaTime;
-
 private:
 	sf::RenderWindow* window;
 
@@ -21,9 +18,10 @@ private:
 
 	Player* player;
 
-	bool lmbPressed;
+	TickData tickData;
 
 	void callTicks();
+	void getInput();
 	void pollEvents();
 	void drawObjects();
 };

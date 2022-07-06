@@ -2,15 +2,13 @@
 #include "Bullet.h"
 #include "Player.h"
 
-float App::deltaTime = 0;
-
 void App::initApp() {
 	window = new sf::RenderWindow(sf::VideoMode(1024, 768), "Top-Down Shooter");
 
-    lmbPressed = false;
+    tickData.windowSize = window->getSize();
+    tickData.gameObjects = &gameObjects;
 
     player = new Player();
-    std::cout << player->getDimensions().x << " " << player->getDimensions().y << std::endl;
     gameObjects.push_back(player);
     player->setPosition(player->getDimensions() / 2.f);
 }
@@ -22,55 +20,9 @@ void App::mainLoop() {
     
     while (window->isOpen()) {
         // Update deltaTime value
-        App::deltaTime = deltaClock.restart().asSeconds();
+        tickData.deltaTime = deltaClock.restart().asSeconds();
 
-        bool upPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::W);
-        bool leftPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::A);
-        bool downPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::S);
-        bool rightPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::D);
-        int hDir = rightPressed - leftPressed;
-        int vDir = downPressed - upPressed;
-
-        sf::Vector2i mousePos = sf::Mouse::getPosition(*window);
-        sf::Vector2f directVector = sf::Vector2f(mousePos.x - player->getPosition().x, mousePos.y - player->getPosition().y);
-        sf::Vector2f mouseDirectionNormal = sf::Vector2f(directVector / (float)std::sqrt(std::pow(directVector.x, 2) + std::pow(directVector.y, 2)));
-
-        //std::cout << directVector.x << " - " << directVector.y << std::endl;
-
-        if (hDir || vDir) {
-            sf::Vector2f dir(static_cast<float>(hDir), static_cast<float>(vDir));
-            sf::Vector2f speedVector = dir * App::deltaTime * playerSpeed;
-
-            if (player->getPosition().x - player->getDimensions().x / 2.f + speedVector.x < 0) {
-                speedVector.x = 0;
-                player->setPosition(player->getDimensions().x / 2.f, player->getPosition().y);
-            }
-            if (player->getPosition().x + speedVector.x > window->getSize().x - player->getDimensions().x / 2.f) {
-                speedVector.x = 0;
-                player->setPosition(window->getSize().x - player->getDimensions().x / 2.f, player->getPosition().y);
-            }
-
-            if (player->getPosition().y - player->getDimensions().y / 2.f + speedVector.y < 0) {
-                speedVector.y = 0;
-                player->setPosition(player->getPosition().x, player->getDimensions().y / 2.f);
-            }
-            if (player->getPosition().y + speedVector.y > window->getSize().y - player->getDimensions().y / 2.f) {
-                speedVector.y = 0;
-                player->setPosition(player->getPosition().x, window->getSize().y - player->getDimensions().y / 2.f);
-            }
-
-            player->move(speedVector);
-        }
-
-        bool shotDone = sf::Mouse::isButtonPressed(sf::Mouse::Left);
-
-        if (shotDone && !lmbPressed) {
-            lmbPressed = true;
-            Bullet *bullet = new Bullet();
-            bullet->setPosition(player->getPosition());
-            bullet->bulletSetSpeed(mouseDirectionNormal);
-            gameObjects.push_back(bullet);
-        }
+        getInput();
 
         callTicks();
         
@@ -83,9 +35,18 @@ void App::mainLoop() {
     }
 }
 
+void App::getInput() {
+    tickData.upPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::W);
+    tickData.leftPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::A);
+    tickData.downPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::S);
+    tickData.rightPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::D);
+
+    tickData.mousePos = sf::Mouse::getPosition(*window);
+}
+
 void App::callTicks() {
     for (size_t i = 0; i < gameObjects.size(); i++) {
-        gameObjects[i]->tick();
+        gameObjects[i]->tick(tickData);
 
         // Delete objects flagged to be destroyed
         if (gameObjects[i]->toDestroy) {
@@ -104,7 +65,7 @@ void App::pollEvents() {
             window->close();
 
         if (event.type == sf::Event::MouseButtonReleased)
-            lmbPressed = false;
+            tickData.lmbPressed = false;
     }
 }
 

@@ -11,7 +11,7 @@ public:
 	void bulletSetSpeed(sf::Vector2f);
 	void bulletSetSpeed();
 
-	void tick();
+	void tick(TickData & tickData);
 
 private:
 	// \brief Time before self-destruction
