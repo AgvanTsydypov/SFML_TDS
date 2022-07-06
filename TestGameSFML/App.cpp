@@ -1,6 +1,7 @@
 #include "App.h"
 #include "Bullet.h"
 #include "Player.h"
+#include "SolidObject.h"
 
 void App::initApp() {
 	window = new sf::RenderWindow(sf::VideoMode(1024, 768), "Top-Down Shooter");
@@ -10,13 +11,14 @@ void App::initApp() {
 
     player = new Player();
     gameObjects.push_back(player);
+    SolidObject *so = new SolidObject();
+    //std::cout << (dynamic_cast<SolidObject*>(&so) != nullptr) << std::endl;
+    gameObjects.push_back(so);
     player->setPosition(player->getDimensions() / 2.f);
 }
 
 void App::mainLoop() {
     sf::Clock deltaClock;
-
-    float playerSpeed = 500.f;
     
     while (window->isOpen()) {
         // Update deltaTime value

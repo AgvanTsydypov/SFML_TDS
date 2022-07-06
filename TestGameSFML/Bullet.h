@@ -15,7 +15,7 @@ public:
 
 private:
 	// \brief Time before self-destruction
-	float timer;
+	float bulletLifeTimer;
 	sf::Vector2f speed;
 	const float realSpeed = 300.f;
 };

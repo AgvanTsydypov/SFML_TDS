@@ -44,7 +44,7 @@ void Player::tick(TickData & tickData) {
 
     bool shotDone = sf::Mouse::isButtonPressed(sf::Mouse::Left);
 
-    if (shotDone && !tickData.lmbPressed) {
+    if (shotDone) {
         tickData.lmbPressed = true;
         Bullet* bullet = new Bullet();
         bullet->setPosition(position);
