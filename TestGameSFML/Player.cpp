@@ -16,6 +16,8 @@ void Player::tick(TickData & tickData) {
 
     if (hDir || vDir) {
         sf::Vector2f dir(static_cast<float>(hDir), static_cast<float>(vDir));
+        float length = std::sqrtf(std::pow(dir.x, 2) + std::pow(dir.y, 2));
+        dir = dir / length;
         sf::Vector2f speedVector = dir * tickData.deltaTime * movementSpeed;
 
         if (position.x - getDimensions().x / 2.f + speedVector.x < 0) {

@@ -7,7 +7,8 @@ public:
 	SolidObject();
 	void tick(TickData& tickData);
 	int checkCollision(GameObject* go1);
+
 private:
-	float hp;
+
 };
 

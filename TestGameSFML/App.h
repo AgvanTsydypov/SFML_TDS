@@ -20,6 +20,8 @@ private:
 
 	TickData tickData;
 
+	sf::Text *fpsCounter;
+
 	void callTicks();
 	void getInput();
 	void pollEvents();

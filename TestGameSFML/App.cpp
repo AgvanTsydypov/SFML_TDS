@@ -5,24 +5,45 @@
 
 void App::initApp() {
 	window = new sf::RenderWindow(sf::VideoMode(1024, 768), "Top-Down Shooter");
+    window->setFramerateLimit(0);
 
     tickData.windowSize = window->getSize();
     tickData.gameObjects = &gameObjects;
 
+    // Player
     player = new Player();
     gameObjects.push_back(player);
+
+    // Test SolidObject
     SolidObject *so = new SolidObject();
-    //std::cout << (dynamic_cast<SolidObject*>(&so) != nullptr) << std::endl;
     gameObjects.push_back(so);
     player->setPosition(player->getDimensions() / 2.f);
+
+    // FPS counter
+    fpsCounter = new sf::Text();
+    sf::Font* font = new sf::Font();
+    if (!font->loadFromFile("C:/Windows/Fonts/arial.ttf")) {
+    }
+    fpsCounter->setFont(*font);
+    fpsCounter->setFillColor(sf::Color::Green);
+    fpsCounter->setString("FPS: 0");
 }
 
 void App::mainLoop() {
     sf::Clock deltaClock;
+    int frameCount = 0;
+    sf::Clock fpsClock;
     
     while (window->isOpen()) {
         // Update deltaTime value
         tickData.deltaTime = deltaClock.restart().asSeconds();
+
+        frameCount++;
+        if (fpsClock.getElapsedTime().asSeconds() > 1) {
+            fpsCounter->setString("FPS: " + std::to_string(frameCount));
+            frameCount = 0;
+            fpsClock.restart();
+        }
 
         getInput();
 
@@ -77,6 +98,8 @@ void App::drawObjects() {
     for (size_t i = 0; i < gameObjects.size(); i++) {
         gameObjects[i]->draw(*window);
     }
+
+    window->draw(*fpsCounter);
 
     window->display();
 }

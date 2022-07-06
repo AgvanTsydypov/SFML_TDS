@@ -1,9 +1,8 @@
 #include "SolidObject.h"
 #include "Bullet.h"
 
-
 SolidObject::SolidObject() {
-    sf::Vector2f recSize = sf::Vector2f(120.f, 320.f);
+    sf::Vector2f recSize = sf::Vector2f(120.f, 120.f);
     sf::RectangleShape* shape = new sf::RectangleShape(recSize);
     shape->setFillColor(sf::Color::Green);
     setShape(shape);
@@ -20,8 +19,6 @@ void SolidObject::tick(TickData& tickData) {
         }
         if (dynamic_cast<Player*>(obj) != nullptr){
             int col = checkCollision(obj);
-            if (col)
-                std::cout << col << std::endl;
             if (col == 1) {
                 obj->setPosition(getPosition().x - obj->getDimensions().x / 2.f, obj->getPosition().y);
             }
