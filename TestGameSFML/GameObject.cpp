@@ -1,3 +1,4 @@
+#include "Math.h"
 #include "GameObject.h"
 
 GameObject::GameObject() {
@@ -62,4 +63,18 @@ sf::Vector2f GameObject::getDimensions() {
 
 	sf::Vector2f dimensions(boundaries.width, boundaries.height);
 	return dimensions;
+}
+
+void GameObject::setRotation(sf::Vector2f dir) {
+	if (sprite)
+		shape->setRotation(vectorAngle(dir));
+	if (shape)
+		shape->setRotation(vectorAngle(dir));
+}
+
+void GameObject::setRotation(float angle) {
+	if (sprite)
+		shape->setRotation(angle);
+	if (shape)
+		shape->setRotation(angle);
 }

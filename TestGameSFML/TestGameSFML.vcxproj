@@ -149,6 +149,7 @@
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Math.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="SolidObject.cpp" />
   </ItemGroup>
@@ -156,6 +157,7 @@
     <ClInclude Include="App.h" />
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="GameObject.h" />
+    <ClInclude Include="Math.h" />
     <ClInclude Include="SolidObject.h" />
     <ClInclude Include="TDS.h" />
     <ClInclude Include="Player.h" />

@@ -6,9 +6,14 @@
 
 class App {
 public:
+	~App();
+
 	void initApp();
 
-	// \brief Launches game's main loop
+	// \brief Initializes game's starting conditions
+	void launchGame();
+
+	// \brief Performs game's main loop
 	void mainLoop();
 
 private:
@@ -21,6 +26,7 @@ private:
 	TickData tickData;
 
 	sf::Text *fpsCounter;
+	sf::Font* basicFont;
 
 	void callTicks();
 	void getInput();

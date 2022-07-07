@@ -4,57 +4,56 @@
 #include "SolidObject.h"
 
 void App::initApp() {
-	window = new sf::RenderWindow(sf::VideoMode(1024, 768), "Top-Down Shooter");
+    int windowStyle = sf::Style::Close;
+
+	window = new sf::RenderWindow(sf::VideoMode(1024, 768), "Top-Down Shooter", windowStyle);
     window->setFramerateLimit(0);
 
     tickData.windowSize = window->getSize();
     tickData.gameObjects = &gameObjects;
+}
 
+void App::launchGame() {
     // Player
     player = new Player();
     gameObjects.push_back(player);
 
     // Test SolidObject
-    SolidObject *so = new SolidObject();
+    SolidObject* so = new SolidObject();
+    gameObjects.push_back(so);
+    so = new SolidObject();
+    so->setPosition(400, 100);
     gameObjects.push_back(so);
     player->setPosition(player->getDimensions() / 2.f);
 
     // FPS counter
     fpsCounter = new sf::Text();
-    sf::Font* font = new sf::Font();
-    if (!font->loadFromFile("C:/Windows/Fonts/arial.ttf")) {
-    }
-    fpsCounter->setFont(*font);
+    basicFont = new sf::Font();
+    basicFont->loadFromFile(FONT_DIR);
+    fpsCounter->setFont(*basicFont);
     fpsCounter->setFillColor(sf::Color::Green);
     fpsCounter->setString("FPS: 0");
 }
 
 void App::mainLoop() {
     sf::Clock deltaClock;
-    int frameCount = 0;
     sf::Clock fpsClock;
     
     while (window->isOpen()) {
         // Update deltaTime value
         tickData.deltaTime = deltaClock.restart().asSeconds();
 
-        frameCount++;
-        if (fpsClock.getElapsedTime().asSeconds() > 1) {
-            fpsCounter->setString("FPS: " + std::to_string(frameCount));
-            frameCount = 0;
-            fpsClock.restart();
-        }
+        // FPS counter
+        long frameCount = std::lround(1.f / tickData.deltaTime);
+        fpsCounter->setString("FPS: " + std::to_string(frameCount));
+
+        pollEvents();
 
         getInput();
 
         callTicks();
-        
-        pollEvents();
 
         drawObjects();
-
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
-            window->close();
     }
 }
 
@@ -63,6 +62,11 @@ void App::getInput() {
     tickData.leftPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::A);
     tickData.downPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::S);
     tickData.rightPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::D);
+
+    tickData.lmbPressed = sf::Mouse::isButtonPressed(sf::Mouse::Left);
+
+    tickData.lmbWasPressed = tickData.lmbPressed && !tickData.lmbWasPressedBefore;
+    tickData.lmbWasPressedBefore = tickData.lmbPressed;
 
     tickData.mousePos = sf::Mouse::getPosition(*window);
 }
@@ -87,9 +91,13 @@ void App::pollEvents() {
         if (event.type == sf::Event::Closed)
             window->close();
 
-        if (event.type == sf::Event::MouseButtonReleased)
-            tickData.lmbPressed = false;
+        if (event.type == sf::Event::MouseButtonReleased) {
+            tickData.lmbWasPressedBefore = false;
+        }
     }
+
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
+        window->close();
 }
 
 void App::drawObjects() {
@@ -102,4 +110,14 @@ void App::drawObjects() {
     window->draw(*fpsCounter);
 
     window->display();
+}
+
+App::~App() {
+    delete window;
+    delete fpsCounter;
+    delete basicFont;
+
+    for (size_t i = 0; i < gameObjects.size(); i++) {
+        delete gameObjects[i];
+    }
 }

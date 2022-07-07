@@ -21,6 +21,9 @@ public:
 	virtual sf::Vector2f getPosition();
 	virtual void move(sf::Vector2f speed);
 
+	virtual void setRotation(sf::Vector2f dir);
+	virtual void setRotation(float angle);
+
 	virtual void setShape(sf::Shape* shape);
 	// \brief Returns a vector containing the width and height of this objects bounding box
 	virtual sf::Vector2f getDimensions();

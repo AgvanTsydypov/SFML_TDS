@@ -4,17 +4,17 @@ Bullet::Bullet() {
 	position = sf::Vector2f(0, 0);
 
 	sprite = nullptr;
-	sf::CircleShape* newShape = new sf::CircleShape(10.f, 5);
-	newShape->setFillColor(sf::Color(120, 120, 120, 255));
-	setShape(newShape);
+	sf::CircleShape* shape = new sf::CircleShape(10.f, 3);
+	shape->setFillColor(sf::Color(120, 120, 120, 255));
+	setShape(shape);
 	
-	bulletLifeTimer = 10.f;
+	bulletLifeTimer = 7.f;
 
-	bulletSetSpeed();
+	setMovementDirection();
 }
 
 void Bullet::tick(TickData & tickData) {
-	move(speed * tickData.deltaTime);
+	move(movementVector * tickData.deltaTime);
 	
 	bulletLifeTimer -= tickData.deltaTime;
 
@@ -23,10 +23,11 @@ void Bullet::tick(TickData & tickData) {
 	}
 }
 
-void Bullet::bulletSetSpeed(sf::Vector2f bulletDirection) {
-	speed = bulletDirection * realSpeed;
+void Bullet::setMovementDirection(sf::Vector2f bulletDirection) {
+	movementVector = bulletDirection * defaultSpeed;
+	setRotation(vectorAngle(movementVector) + 60);
 }
 
-void Bullet::bulletSetSpeed() {
-	speed = sf::Vector2f(realSpeed, 0.f);
+void Bullet::setMovementDirection() {
+	movementVector = sf::Vector2f(defaultSpeed, 0.f);
 }

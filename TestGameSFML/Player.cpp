@@ -2,7 +2,7 @@
 #include "Bullet.h"
 
 Player::Player() {
-    sf::CircleShape* shape = new sf::CircleShape(50.f);
+    sf::RectangleShape* shape = new sf::RectangleShape(sf::Vector2f(50.f, 50.f));
     shape->setFillColor(sf::Color::Magenta);
 
     sf::FloatRect boundaries = shape->getGlobalBounds();
@@ -16,41 +16,43 @@ void Player::tick(TickData & tickData) {
 
     if (hDir || vDir) {
         sf::Vector2f dir(static_cast<float>(hDir), static_cast<float>(vDir));
-        float length = std::sqrtf(std::pow(dir.x, 2) + std::pow(dir.y, 2));
-        dir = dir / length;
+        dir = vectorNormalized(dir);
         sf::Vector2f speedVector = dir * tickData.deltaTime * movementSpeed;
 
-        if (position.x - getDimensions().x / 2.f + speedVector.x < 0) {
+        sf::Vector2f dimensions = getDimensions();
+
+        if (position.x - dimensions.x / 2.f + speedVector.x < 0) {
             speedVector.x = 0;
-            setPosition(getDimensions().x / 2.f, position.y);
+            setPosition(dimensions.x / 2.f, position.y);
         }
-        if (position.x + speedVector.x > tickData.windowSize.x - getDimensions().x / 2.f) {
+        if (position.x + speedVector.x > tickData.windowSize.x - dimensions.x / 2.f) {
             speedVector.x = 0;
-            setPosition(tickData.windowSize.x - getDimensions().x / 2.f, position.y);
+            setPosition(tickData.windowSize.x - dimensions.x / 2.f, position.y);
         }
 
-        if (position.y - getDimensions().y / 2.f + speedVector.y < 0) {
+        if (position.y - dimensions.y / 2.f + speedVector.y < 0) {
             speedVector.y = 0;
-            setPosition(position.x, getDimensions().y / 2.f);
+            setPosition(position.x, dimensions.y / 2.f);
         }
-        if (position.y + speedVector.y > tickData.windowSize.y - getDimensions().y / 2.f) {
+        if (position.y + speedVector.y > tickData.windowSize.y - dimensions.y / 2.f) {
             speedVector.y = 0;
-            setPosition(position.x, tickData.windowSize.y - getDimensions().y / 2.f);
+            setPosition(position.x, tickData.windowSize.y - dimensions.y / 2.f);
         }
 
         move(speedVector);
     }
 
     sf::Vector2f directVector = sf::Vector2f(tickData.mousePos.x - position.x, tickData.mousePos.y - position.y);
-    sf::Vector2f mouseDirectionNormal = sf::Vector2f(directVector / (float)std::sqrt(std::pow(directVector.x, 2) + std::pow(directVector.y, 2)));
+    sf::Vector2f mouseDirectionNormal = vectorNormalized(directVector);
 
-    bool shotDone = sf::Mouse::isButtonPressed(sf::Mouse::Left);
+    setRotation(mouseDirectionNormal);
 
-    if (shotDone) {
-        tickData.lmbPressed = true;
+    if (tickData.lmbPressed && shotTimer.getElapsedTime().asSeconds() > shotDelay) {
         Bullet* bullet = new Bullet();
         bullet->setPosition(position);
-        bullet->bulletSetSpeed(mouseDirectionNormal);
+        bullet->setMovementDirection(mouseDirectionNormal);
         tickData.gameObjects->push_back(bullet);
+
+        shotTimer.restart();
     }
 }
