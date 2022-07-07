@@ -19,6 +19,6 @@ private:
 	sf::Vector2f movementVector;
 	
 	// \brief Time before self-destruction
-	float bulletLifeTimer;
+	float bulletLifeTimer = 100.f;
 };
 

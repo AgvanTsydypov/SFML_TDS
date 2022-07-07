@@ -6,7 +6,7 @@
 void App::initApp() {
     int windowStyle = sf::Style::Close;
 
-	window = new sf::RenderWindow(sf::VideoMode(1024, 768), "Top-Down Shooter", windowStyle);
+	window = new sf::RenderWindow(sf::VideoMode(gameWindowWidth, gameWindowHeight), "Top-Down Shooter", windowStyle);
     window->setFramerateLimit(0);
 
     tickData.windowSize = window->getSize();
@@ -58,17 +58,19 @@ void App::mainLoop() {
 }
 
 void App::getInput() {
-    tickData.upPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::W);
-    tickData.leftPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::A);
-    tickData.downPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::S);
-    tickData.rightPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::D);
+    if (!isMouseOutOfWindow()) {
+        tickData.upPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::W);
+        tickData.leftPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::A);
+        tickData.downPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::S);
+        tickData.rightPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::D);
 
-    tickData.lmbPressed = sf::Mouse::isButtonPressed(sf::Mouse::Left);
+        tickData.lmbPressed = sf::Mouse::isButtonPressed(sf::Mouse::Left);
 
-    tickData.lmbWasPressed = tickData.lmbPressed && !tickData.lmbWasPressedBefore;
-    tickData.lmbWasPressedBefore = tickData.lmbPressed;
+        tickData.lmbWasPressed = tickData.lmbPressed && !tickData.lmbWasPressedBefore;
+        tickData.lmbWasPressedBefore = tickData.lmbPressed;
 
-    tickData.mousePos = sf::Mouse::getPosition(*window);
+        tickData.mousePos = sf::Mouse::getPosition(*window);
+    }
 }
 
 void App::callTicks() {
@@ -110,6 +112,13 @@ void App::drawObjects() {
     window->draw(*fpsCounter);
 
     window->display();
+}
+
+bool App::isMouseOutOfWindow() {
+    return sf::Mouse::getPosition(*window).x < 0 ||
+        sf::Mouse::getPosition(*window).y < 0 ||
+        sf::Mouse::getPosition(*window).x > gameWindowWidth ||
+        sf::Mouse::getPosition(*window).y > gameWindowHeight;
 }
 
 App::~App() {

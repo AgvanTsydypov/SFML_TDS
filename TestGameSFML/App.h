@@ -16,7 +16,13 @@ public:
 	// \brief Performs game's main loop
 	void mainLoop();
 
+	// \brief checking for mouse presence in game window space
+	bool isMouseOutOfWindow();
+
 private:
+	const int gameWindowWidth = 1024;
+	const int gameWindowHeight = 768;
+
 	sf::RenderWindow* window;
 
 	std::vector<GameObject*> gameObjects;

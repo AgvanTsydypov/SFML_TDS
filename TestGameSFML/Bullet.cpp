@@ -7,8 +7,6 @@ Bullet::Bullet() {
 	sf::CircleShape* shape = new sf::CircleShape(10.f, 3);
 	shape->setFillColor(sf::Color(120, 120, 120, 255));
 	setShape(shape);
-	
-	bulletLifeTimer = 7.f;
 
 	setMovementDirection();
 }
@@ -25,7 +23,7 @@ void Bullet::tick(TickData & tickData) {
 
 void Bullet::setMovementDirection(sf::Vector2f bulletDirection) {
 	movementVector = bulletDirection * defaultSpeed;
-	setRotation(vectorAngle(movementVector) + 0);
+	setRotation(vectorAngle(movementVector) + 60);
 }
 
 void Bullet::setMovementDirection() {

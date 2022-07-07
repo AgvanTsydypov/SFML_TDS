@@ -67,14 +67,14 @@ sf::Vector2f GameObject::getDimensions() {
 
 void GameObject::setRotation(sf::Vector2f dir) {
 	if (sprite)
-		shape->setRotation(vectorAngle(dir));
+		sprite->setRotation(vectorAngle(dir));
 	if (shape)
 		shape->setRotation(vectorAngle(dir));
 }
 
 void GameObject::setRotation(float angle) {
 	if (sprite)
-		shape->setRotation(angle);
+		sprite->setRotation(angle);
 	if (shape)
 		shape->setRotation(angle);
 }
