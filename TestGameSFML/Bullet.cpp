@@ -25,7 +25,7 @@ void Bullet::tick(TickData & tickData) {
 
 void Bullet::setMovementDirection(sf::Vector2f bulletDirection) {
 	movementVector = bulletDirection * defaultSpeed;
-	setRotation(vectorAngle(movementVector) + 60);
+	setRotation(vectorAngle(movementVector) + 0);
 }
 
 void Bullet::setMovementDirection() {
