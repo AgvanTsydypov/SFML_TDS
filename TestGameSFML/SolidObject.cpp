@@ -2,7 +2,7 @@
 #include "Bullet.h"
 
 SolidObject::SolidObject() {
-    sf::Vector2f recSize = sf::Vector2f(120.f, 120.f);
+    sf::Vector2f recSize = sf::Vector2f(120.f, 420.f);
     sf::RectangleShape* shape = new sf::RectangleShape(recSize);
     shape->setFillColor(sf::Color::Green);
     setShape(shape);
@@ -41,15 +41,29 @@ int SolidObject::checkCollision(GameObject* obj) {
     bool up = obj->getPosition().y + obj->getDimensions().y / 2.f > getPosition().y;
     bool down = obj->getPosition().y - obj->getDimensions().y / 2.f < getPosition().y + getDimensions().y;
     if (left && up && down && right) {
+        sf::Vector2f cornerVecTL(-getDimensions().x / 2.f, getDimensions().y / 2.f);
+        sf::Vector2f VecL(-getDimensions().x / 2.f, 0);
         sf::Vector2f dir(getPosition() + getDimensions() / 2.f - obj->getPosition());
-        if (std::max(std::abs(dir.x), std::abs(dir.y)) == std::abs(dir.x) && !std::signbit(dir.x))
+
+        float thisCos = std::acos(cosF(cornerVecTL, VecL)) * 180 / PI;
+        float objCos = std::acos(cosF(dir, VecL)) * 180 / PI;
+
+        // left side
+        if (objCos > 180 - thisCos)
             return 1;
-        if (std::max(std::abs(dir.x), std::abs(dir.y)) == std::abs(dir.x) && std::signbit(dir.x))
+        // right side
+        if (objCos < thisCos)
             return 2;
-        if (std::max(std::abs(dir.x), std::abs(dir.y)) == std::abs(dir.y) && !std::signbit(dir.y))
+        // top side
+        if (objCos > thisCos && objCos < 180 - thisCos && !std::signbit(dir.y))
             return 3;
-        if (std::max(std::abs(dir.x), std::abs(dir.y)) == std::abs(dir.y) && std::signbit(dir.y))
+        // bottom side
+        if (objCos > thisCos && objCos < 180 - thisCos && std::signbit(dir.y))
             return 4;
     }
     return 0; 
+}
+
+float SolidObject::cosF(sf::Vector2f a, sf::Vector2f b) {
+    return (a.x * b.x + a.y * b.y) / std::sqrt(std::pow(a.x, 2) + std::pow(a.y, 2)) / std::sqrt(std::pow(b.x, 2) + std::pow(b.y, 2));
 }
