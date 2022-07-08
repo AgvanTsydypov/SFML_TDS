@@ -55,15 +55,9 @@ void SolidObject::tick(TickData& tickData) {
 
 int SolidObject::checkCollision(GameObject* obj) {
     sf::Vector2f dimensions = getDimensions();
-    sf::Vector2f objDimensions = obj->getDimensions();
     sf::Vector2f objPosition = obj->getPosition();
 
-    bool left = objPosition.x + objDimensions.x / 2.f > position.x;
-    bool right = objPosition.x - objDimensions.x / 2.f < position.x + dimensions.x;
-    bool up = objPosition.y + objDimensions.y / 2.f > position.y;
-    bool down = objPosition.y - objDimensions.y / 2.f < position.y + dimensions.y;
-
-    if (left && up && down && right) {
+    if (shape->getGlobalBounds().intersects(obj->getGlobalBounds())) {
         sf::Vector2f cornerVecTL(-dimensions.x / 2.f, dimensions.y / 2.f);
         sf::Vector2f VecL(-dimensions.x / 2.f, 0);
         sf::Vector2f dir(position + dimensions / 2.f - objPosition);

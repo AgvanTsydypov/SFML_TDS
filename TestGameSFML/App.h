@@ -34,6 +34,9 @@ private:
 	sf::Text *fpsCounter;
 	sf::Font* basicFont;
 
+	bool windowInFocus = true;
+	bool readInput = true;
+
 	void callTicks();
 	void getInput();
 	void pollEvents();

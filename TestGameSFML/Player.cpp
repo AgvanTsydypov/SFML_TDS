@@ -13,9 +13,10 @@ Player::Player() {
 void Player::tick(TickData & tickData) {
     int hDir = tickData.rightPressed - tickData.leftPressed;
     int vDir = tickData.downPressed - tickData.upPressed;
-
+    
     if (hDir || vDir) {
         sf::Vector2f dir(static_cast<float>(hDir), static_cast<float>(vDir));
+        
         dir = vectorNormalized(dir);
         sf::Vector2f speedVector = dir * tickData.deltaTime * movementSpeed;
 

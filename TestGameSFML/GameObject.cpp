@@ -78,3 +78,12 @@ void GameObject::setRotation(float angle) {
 	if (shape)
 		shape->setRotation(angle);
 }
+
+sf::FloatRect GameObject::getGlobalBounds() {
+	if (sprite)
+		return sprite->getGlobalBounds();
+	if (shape)
+		return shape->getGlobalBounds();
+
+	return sf::FloatRect();
+}

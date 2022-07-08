@@ -58,19 +58,20 @@ void App::mainLoop() {
 }
 
 void App::getInput() {
-    if (!isMouseOutOfWindow()) {
-        tickData.upPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::W);
-        tickData.leftPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::A);
-        tickData.downPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::S);
-        tickData.rightPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::D);
+    readInput = !isMouseOutOfWindow() && windowInFocus;
 
-        tickData.lmbPressed = sf::Mouse::isButtonPressed(sf::Mouse::Left);
+    tickData.upPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::W) && readInput;
+    tickData.leftPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::A) && readInput;
+    tickData.downPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::S) && readInput;
+    tickData.rightPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::D) && readInput;
 
-        tickData.lmbWasPressed = tickData.lmbPressed && !tickData.lmbWasPressedBefore;
-        tickData.lmbWasPressedBefore = tickData.lmbPressed;
+    tickData.lmbPressed = sf::Mouse::isButtonPressed(sf::Mouse::Left) && readInput;
 
+    tickData.lmbWasPressed = tickData.lmbPressed && !tickData.lmbWasPressedBefore;
+    tickData.lmbWasPressedBefore = tickData.lmbPressed;
+
+    if (readInput)
         tickData.mousePos = sf::Mouse::getPosition(*window);
-    }
 }
 
 void App::callTicks() {
@@ -88,17 +89,21 @@ void App::callTicks() {
 }
 
 void App::pollEvents() {
-    sf::Event event;
-    while (window->pollEvent(event)) {
-        if (event.type == sf::Event::Closed)
+    sf::Event windowEvent;
+    while (window->pollEvent(windowEvent)) {
+        if (windowEvent.type == sf::Event::Closed)
             window->close();
+        else if (windowEvent.type == sf::Event::LostFocus)
+            windowInFocus = false;
+        else if (windowEvent.type == sf::Event::GainedFocus)
+            windowInFocus = true;
 
-        if (event.type == sf::Event::MouseButtonReleased) {
+        if (windowEvent.type == sf::Event::MouseButtonReleased) {
             tickData.lmbWasPressedBefore = false;
         }
     }
 
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape) && readInput)
         window->close();
 }
 

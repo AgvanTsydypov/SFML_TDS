@@ -25,8 +25,11 @@ public:
 	virtual void setRotation(float angle);
 
 	virtual void setShape(sf::Shape* shape);
+
 	// \brief Returns a vector containing the width and height of this objects bounding box
 	virtual sf::Vector2f getDimensions();
+
+	virtual sf::FloatRect getGlobalBounds();
 
 protected:
 	sf::Vector2f position;
