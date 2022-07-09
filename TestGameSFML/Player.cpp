@@ -8,6 +8,9 @@ Player::Player() {
     sf::FloatRect boundaries = shape->getGlobalBounds();
     shape->setOrigin(boundaries.width / 2, boundaries.height / 2);
     setShape(shape);
+
+    maxHealth = 100;
+    health = maxHealth;
 }
 
 void Player::tick(TickData & tickData) {

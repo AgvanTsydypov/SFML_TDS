@@ -1,7 +1,8 @@
 #include "App.h"
 #include "Bullet.h"
 #include "Player.h"
-#include "SolidObject.h"
+#include "Wall.h"
+#include "Zombie.h"
 
 void App::initApp() {
     int windowStyle = sf::Style::Close;
@@ -16,15 +17,21 @@ void App::initApp() {
 void App::launchGame() {
     // Player
     player = new Player();
+    player->setPosition(player->getDimensions() / 2.f);
     gameObjects.push_back(player);
 
-    // Test SolidObject
-    SolidObject* so = new SolidObject();
-    gameObjects.push_back(so);
-    so = new SolidObject();
-    so->setPosition(400, 100);
-    gameObjects.push_back(so);
-    player->setPosition(player->getDimensions() / 2.f);
+    // Test Wall
+    Wall* wall = new Wall();
+    gameObjects.push_back(wall);
+    wall->setPosition(500, 120);
+    wall = new Wall();
+    wall->setPosition(400, 100);
+    gameObjects.push_back(wall);
+
+    // Test Zombie
+    Zombie* zombie = new Zombie();
+    zombie->setPosition(200, 50);
+    gameObjects.push_back(zombie);
 
     // FPS counter
     fpsCounter = new sf::Text();

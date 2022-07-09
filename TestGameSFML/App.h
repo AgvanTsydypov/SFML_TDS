@@ -42,4 +42,3 @@ private:
 	void pollEvents();
 	void drawObjects();
 };
-

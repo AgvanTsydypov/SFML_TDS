@@ -8,49 +8,6 @@ SolidObject::SolidObject() {
     setShape(shape);
 
     shape->setOrigin(0, 0);
-
-    setPosition(500, 200);
-}
-
-void SolidObject::tick(TickData& tickData) {
-    for (size_t i = 0; i < tickData.gameObjects->size(); i++) {
-        if (toDestroy)
-            break;
-        GameObject *obj = (*tickData.gameObjects)[i];
-        
-        // Bullet
-        if (dynamic_cast<Bullet*>(obj) != nullptr) {
-            if (checkCollision(obj)) {
-                obj->toDestroy = true;
-
-                health--;
-                if (health <= 0)
-                    toDestroy = true;
-            }
-        }
-
-        // Player
-        if (dynamic_cast<Player*>(obj) != nullptr){
-            int col = checkCollision(obj);
-
-            sf::Vector2f dimensions = getDimensions();
-            sf::Vector2f objDimensions = obj->getDimensions();
-            sf::Vector2f objPosition = obj->getPosition();
-
-            if (col == LEFT) {
-                obj->setPosition(position.x - objDimensions.x / 2.f, objPosition.y);
-            }
-            else if (col == RIGHT) {
-                obj->setPosition(position.x + dimensions.x + objDimensions.x / 2.f, objPosition.y);
-            }
-            else if (col == TOP) {
-                obj->setPosition(objPosition.x, position.y - objDimensions.y / 2.f);
-            }
-            else if (col == BOTTOM) {
-                obj->setPosition(objPosition.x, position.y + dimensions.y + objDimensions.y / 2.f);
-            }
-        }
-    }
 }
 
 int SolidObject::checkCollision(GameObject* obj) {

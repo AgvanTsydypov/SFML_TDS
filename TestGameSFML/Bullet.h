@@ -2,23 +2,24 @@
 
 #include "TDS.h"
 #include "App.h"
-#include "GameObject.h"
+#include "Projectile.h"
 
-class Bullet : public GameObject {
+class Bullet : public Projectile {
 public:
 	Bullet();
 
 	void tick(TickData & tickData);
 
-	void setMovementDirection(sf::Vector2f);
 	void setMovementDirection();
+	void setMovementDirection(sf::Vector2f bulletDirection);
 
-private:
-	const float defaultSpeed = 500.f;
+protected:
+	float defaultSpeed = 500.f;
 	
 	sf::Vector2f movementVector;
 	
 	// \brief Time before self-destruction
-	float bulletLifeTimer = 100.f;
-};
+	float projectileLifeTime = 100.f;
 
+	float damage = 10.f;
+};

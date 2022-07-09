@@ -6,10 +6,8 @@
 class SolidObject : public GameObject {
 public:
 	SolidObject();
-	void tick(TickData& tickData);
 	int checkCollision(GameObject* go1);
 
-private:
-	int health = 100;
-};
+protected:
 
+};

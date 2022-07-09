@@ -1,9 +1,9 @@
 #pragma once
 
 #include "Math.h"
-#include "GameObject.h"
+#include "Character.h"
 
-class Player : public GameObject {
+class Player : public Character {
 public:
 	Player();
 

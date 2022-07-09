@@ -21,10 +21,6 @@ void GameObject::draw(sf::RenderWindow& window) {
 		window.draw(*shape);
 }
 
-void GameObject::tick(TickData & tickData) {
-
-}
-
 void GameObject::setPosition(sf::Vector2f new_position) {
 	position = new_position;
 
