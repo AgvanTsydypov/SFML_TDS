@@ -9,4 +9,8 @@ public:
 protected:
 	float maxHealth = 1.f;
 	float health;
+
+	float defaultSpeed;
+
+	sf::Vector2f movementVector;
 };

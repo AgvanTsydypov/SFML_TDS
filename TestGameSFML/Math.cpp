@@ -19,10 +19,16 @@ float vectorLength(sf::Vector2i vec) {
 
 sf::Vector2f vectorNormalized(sf::Vector2f vec) {
     float length = vectorLength(vec);
+    if (length == 0)
+        return sf::Vector2f();
+
     return vec / length;
 }
 
 sf::Vector2f vectorNormalized(sf::Vector2i vec) {
     float length = vectorLength(vec);
+    if (length == 0)
+        return sf::Vector2f();
+
     return sf::Vector2f(vec) / length;
 }

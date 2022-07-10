@@ -3,9 +3,6 @@
 #include "Wall.h"
 
 Bullet::Bullet() {
-	position = sf::Vector2f(0, 0);
-
-	sprite = nullptr;
 	sf::CircleShape* shape = new sf::CircleShape(10.f, 3);
 	shape->setFillColor(sf::Color(120, 120, 120, 255));
 	setShape(shape);

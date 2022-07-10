@@ -47,4 +47,5 @@ struct TickData {
 
 	std::vector<GameObject*> *gameObjects;
 
+	sf::Vector2f playerPos = sf::Vector2f();
 };

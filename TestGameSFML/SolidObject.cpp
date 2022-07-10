@@ -1,15 +1,6 @@
 #include "SolidObject.h"
 #include "Bullet.h"
 
-SolidObject::SolidObject() {
-    sf::Vector2f recSize = sf::Vector2f(120.f, 420.f);
-    sf::RectangleShape* shape = new sf::RectangleShape(recSize);
-    shape->setFillColor(sf::Color::Green);
-    setShape(shape);
-
-    shape->setOrigin(0, 0);
-}
-
 int SolidObject::checkCollision(GameObject* obj) {
     sf::Vector2f dimensions = getDimensions();
     sf::Vector2f objPosition = obj->getPosition();

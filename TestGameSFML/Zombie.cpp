@@ -9,9 +9,15 @@ Zombie::Zombie() {
     setShape(shape);
 
     health = 100;
+    defaultSpeed = 50.f;
 }
 
 void Zombie::tick(TickData & tickData) {
+    movementVector = tickData.playerPos - position;
+    movementVector = vectorNormalized(movementVector);
+    movementVector *= tickData.deltaTime * defaultSpeed;
 
+    move(movementVector);
+    setRotation(movementVector);
 }
 

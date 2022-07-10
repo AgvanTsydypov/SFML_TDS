@@ -85,6 +85,12 @@ void App::callTicks() {
     for (size_t i = 0; i < gameObjects.size(); i++) {
         gameObjects[i]->tick(tickData);
 
+        // Updating player position
+        Player* player = dynamic_cast<Player*>(gameObjects[i]);
+        if (player != nullptr) {
+            tickData.playerPos = player->getPosition();
+        }
+
         // Delete objects flagged to be destroyed
         if (gameObjects[i]->toDestroy) {
             std::vector<GameObject*>::iterator ind = std::find(gameObjects.begin(), gameObjects.end(), gameObjects[i]);
