@@ -8,7 +8,13 @@ void App::initApp() {
     int windowStyle = sf::Style::Close;
 
 	window = new sf::RenderWindow(sf::VideoMode(gameWindowWidth, gameWindowHeight), "Top-Down Shooter", windowStyle);
-    window->setFramerateLimit(0);
+
+    // Get monitor refresh rate with Windows API
+    DEVMODE settings;
+    if (!EnumDisplaySettings(NULL, 0, &settings))
+        window->setFramerateLimit(60);
+    else
+        window->setFramerateLimit(settings.dmDisplayFrequency);
 
     tickData.windowSize = window->getSize();
     tickData.gameObjects = &gameObjects;

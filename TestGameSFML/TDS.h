@@ -1,4 +1,18 @@
 #pragma once
+
+#include <iostream>
+#include <SFML/System.hpp>
+#include <SFML/Graphics.hpp>
+#include <vector>
+#include <algorithm>
+#include <crtdbg.h>
+
+#if defined(_WIN32) || defined(_WIN64)
+# include <Windows.h>
+# include <wingdi.h>
+# include <WinUser.h>
+#endif
+
 /*
 #define _CRTDBG_MAP_ALLOC
 
@@ -10,13 +24,6 @@
 	#define DBG_NEW  new
 #endif
 */
-
-#include <iostream>
-#include <SFML/System.hpp>
-#include <SFML/Graphics.hpp>
-#include <vector>
-#include <algorithm>
-#include <crtdbg.h>
 
 // Collision side
 #define LEFT 1

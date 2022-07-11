@@ -1,5 +1,6 @@
 #pragma once
 #include "Enemy.h"
+#include "SteeringBehaviors.h"
 
 class Zombie : public Enemy
 {
@@ -8,5 +9,9 @@ public:
 
 	void tick(TickData & tickData);
 
+private:
+	float maxHealth = 100;
+	float defaultSpeed = 70.f;
+	float mass = 4.5f;
 };
 

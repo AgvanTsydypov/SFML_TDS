@@ -8,14 +8,14 @@ Zombie::Zombie() {
     shape->setOrigin(boundaries.width / 2, boundaries.height / 2);
     setShape(shape);
 
-    health = 100;
-    defaultSpeed = 50.f;
+    health = maxHealth;
 }
 
 void Zombie::tick(TickData & tickData) {
-    movementVector = tickData.playerPos - position;
-    movementVector = vectorNormalized(movementVector);
-    movementVector *= tickData.deltaTime * defaultSpeed;
+    float currentSpeed = defaultSpeed * tickData.deltaTime;
+    float currentMass = mass / tickData.deltaTime / 10;
+    sf::Vector2f steeringVector = sb::seek(position, tickData.playerPos, movementVector, currentSpeed, currentMass);
+    movementVector = sb::applySteering(movementVector, steeringVector, currentSpeed);
 
     move(movementVector);
     setRotation(movementVector);
